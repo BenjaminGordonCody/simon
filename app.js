@@ -6,18 +6,18 @@ function sleep(ms) {
 //describe target behaviours
 let targetDetails = [
   {
-    color: "darkred",
-    highlight: "red",
+    color: "pink",
+    highlight: "hotpink",
     sound: new Audio("./audio/1.mp3"),
   },
   {
-    color: "darkblue",
-    highlight: "blue",
+    color: "lightsalmon",
+    highlight: "salmon",
     sound: new Audio("./audio/2.mp3"),
   },
   {
-    color: "darkgreen",
-    highlight: "green",
+    color: "lightseagreen",
+    highlight: "cyan",
     sound: new Audio("./audio/3.mp3"),
   },
   {
