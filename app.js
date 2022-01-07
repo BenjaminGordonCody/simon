@@ -72,6 +72,12 @@ function game() {
   let refresh = () => {
     setSequence(5);
     document.getElementById("recordOfClicks").innerText = "";
+    let endGamePages = document.getElementsByClassName("endGameBanner");
+
+    for (let i = 0; i < endGamePages.length; i++) {
+      console.log(endGamePages[i]);
+      endGamePages[i].style.display = "none";
+    }
   };
 
   let gameState = "playing";
@@ -81,7 +87,7 @@ function game() {
     console.log(gameState);
     if (gameState == "playing" && hasWon()) {
       gameState = "gameEnd";
-      console.log("winner");
+      document.getElementById("winPage").style.display = "block";
     } else if (gameState == "gameEnd") {
       refresh();
       gameState = "playing";
@@ -92,6 +98,7 @@ function game() {
     ) {
       gameState = "gameEnd";
       console.log("loser");
+      document.getElementById("losePage").style.display = "block";
     }
   };
 }

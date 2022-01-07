@@ -7,4 +7,13 @@
   z-index: 1;
   width: 100vw;
   height: 100vh;
+  position: absolute;
+  left: 0px;
+  right: 0px;
+  top: 0px;
+  background-color: goldenrod;
+  display: none;
+  font-size: xx-large;
+  color: white;
+  padding: 250px;
 }
