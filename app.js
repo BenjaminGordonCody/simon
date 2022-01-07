@@ -1,3 +1,8 @@
+function sleep(ms) {
+  //lazy way to control audio playback
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
 //describe target behaviours
 let targetDetails = [
   {
@@ -25,6 +30,7 @@ let targetDetails = [
 function defineTargets() {
   let lightAndSound = (target, targetDetail) => {
     target.style.background = targetDetail.highlight;
+    targetDetail.sound.load();
     targetDetail.sound.play();
     setTimeout(function () {
       target.style.background = targetDetail.color;
@@ -40,7 +46,11 @@ function defineTargets() {
       lightAndSound(targets[i], targetDetails[i]);
     };
   }
+
+  return targets;
 }
+
+let targets = defineTargets();
 
 function generateSequence(length, limit) {
   let sequence = [];
@@ -61,30 +71,42 @@ function hasWon() {
   }
 }
 
-defineTargets();
-
 function setSequence(length) {
   let sequence = generateSequence(length, 4);
   document.getElementById("sequence").innerText = sequence;
 }
-
+async function playSequence(sequence) {
+  for (let i = 0; i < sequence.length; i++) {
+    targetDetails[sequence[i]].sound.load();
+    document.body.style.background = targetDetails[sequence[i]].color;
+    targetDetails[sequence[i]].sound.play();
+    targets[sequence[i]].style.background =
+      targetDetails[sequence[i]].highlight;
+    await sleep(300);
+    targets[sequence[i]].style.background = targetDetails[sequence[i]].color;
+    document.body.style.background = "white";
+  }
+}
 function game() {
   let refresh = () => {
+    //get new game sequences
     setSequence(5);
     document.getElementById("recordOfClicks").innerText = "";
-    let endGamePages = document.getElementsByClassName("endGameBanner");
 
+    //dissapear win/lose banners
+    let endGamePages = document.getElementsByClassName("endGameBanner");
     for (let i = 0; i < endGamePages.length; i++) {
-      console.log(endGamePages[i]);
       endGamePages[i].style.display = "none";
     }
+
+    //play new sequence
+    playSequence(document.getElementById("sequence").innerText);
   };
 
   let gameState = "playing";
-  setSequence(5);
+  refresh();
 
   document.body.onclick = () => {
-    console.log(gameState);
     if (gameState == "playing" && hasWon()) {
       gameState = "gameEnd";
       document.getElementById("winPage").style.display = "block";
@@ -97,7 +119,6 @@ function game() {
         document.getElementById("sequence").innerText.length
     ) {
       gameState = "gameEnd";
-      console.log("loser");
       document.getElementById("losePage").style.display = "block";
     }
   };
